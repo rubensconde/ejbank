@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "ejbank_customer")
-public class CustomerEntity implements Serializable {
+public class CustomerEntity extends UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

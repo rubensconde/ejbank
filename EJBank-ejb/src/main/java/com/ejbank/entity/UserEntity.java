@@ -6,6 +6,8 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "ejbank_user")
+//@DiscriminatorColumn(name = "none")
+//@DiscriminatorValue()
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity implements Serializable {
     @Id
@@ -22,7 +24,7 @@ public class UserEntity implements Serializable {
 
     @OneToMany
     public Collection<TransactionEntity> getTransactions(){
-    //TODO
+
         return null;
     }
 
