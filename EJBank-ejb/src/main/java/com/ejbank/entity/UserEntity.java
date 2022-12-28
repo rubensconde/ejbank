@@ -3,30 +3,28 @@ package com.ejbank.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "ejbank_user")
-//@DiscriminatorColumn(name = "none")
-//@DiscriminatorValue()
+@DiscriminatorColumn(name = "none")
+@DiscriminatorValue(value = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String login;
-    private String email;
+    //private String login;
+    //private String email;
 
     @Column(name = "firstname",nullable = false,length = 50)
     private String firstname;
     @Column(name = "lastname",nullable = false,length = 50)
     private String lastname;
-    private String type;
+   // private String type;
 
-    @OneToMany
-    public Collection<TransactionEntity> getTransactions(){
-
-        return null;
-    }
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<TransactionEntity> transactions;
 
 
     public Integer getId() {
@@ -37,21 +35,21 @@ public class UserEntity implements Serializable {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    public String getLogin() {
+//        return login;
+//    }
+//
+//    public void setLogin(String login) {
+//        this.login = login;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
     public String getFirstname() {
         return firstname;
@@ -69,11 +67,15 @@ public class UserEntity implements Serializable {
         this.lastname = lastname;
     }
 
-    public String getType() {
-        return type;
-    }
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
-    public void setType(String type) {
-        this.type = type;
+    public List<TransactionEntity> getTransactions() {
+        return transactions;
     }
 }

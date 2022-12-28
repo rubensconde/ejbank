@@ -1,6 +1,6 @@
 package com.ejbank.payload;
 
-public class PeoplePayload {
+public class UserPayload {
     
     private final String firstname;
     private final String lastname;
@@ -11,7 +11,7 @@ public class PeoplePayload {
 //        this.lastname = lastname;
 //        this.age = age;
 //    }
-    public PeoplePayload(String firstname, String lastname) {
+    public UserPayload(String firstname, String lastname) {
         this.firstname = firstname;
         this.lastname = lastname;
 //        this.age = null;

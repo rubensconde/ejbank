@@ -2,7 +2,6 @@ package com.ejbank.api;
 
 
 import com.ejbank.payload.AccountPayload;
-import com.ejbank.payload.PeoplePayload;
 import com.ejbank.test.TestAccountBean;
 
 import javax.ejb.EJB;
@@ -12,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path("/accounts")
 @Produces(MediaType.APPLICATION_JSON)
@@ -23,17 +23,10 @@ public class TestAccounts {
 
 
     @GET
-    @Path("/user/{user_id}")
-    public PeoplePayload getUser(@PathParam("user_id") Integer id) {
-        return accountBean.getUser(id);
+    @Path("/{user_id}")
+    public List<AccountPayload> getAccounts(@PathParam("user_id") Integer id) {
+        return accountBean.getAccounts(id);
     }
-
-//    @GET
-//    @Path("/{user_id}")
-//    public PeoplePayload getAccounts(@PathParam("user_id") Integer id) {
-//        AccountPayload user = new AccountPayload(accountBean.getUserFirstName(),accountBean.getUserLastName());
-//        return user;
-//    }
 
 //    @GET
     //@Path("/transaction/validation/notification/{user_id}")

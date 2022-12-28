@@ -12,9 +12,24 @@ public class TransactionEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id_from", nullable = false)
+    private AccountEntity accountFrom;
+    @ManyToOne
+    @JoinColumn(name = "account_id_to", nullable = false)
+    private AccountEntity accountTo;
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private UserEntity author;
+
+    @Column
     private BigDecimal amount;
+    @Column
     private String comment;
+    @Column
     private Boolean applied;
+    @Column
     private Date date;
 
 
