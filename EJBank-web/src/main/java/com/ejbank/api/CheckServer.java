@@ -15,6 +15,6 @@ public class CheckServer {
     @GET
     @Path("/status")
     public ServerPayload getStatus() {
-        return new ServerPayload(true);
+        return new ServerPayload(false);
     }
 }

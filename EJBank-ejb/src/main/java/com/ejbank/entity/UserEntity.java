@@ -7,24 +7,28 @@ import java.util.List;
 
 @Entity
 @Table(name = "ejbank_user")
-@DiscriminatorColumn(name = "none")
-@DiscriminatorValue(value = "user")
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,name = "type")
+@DiscriminatorValue(value = "none")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //private String login;
-    //private String email;
-
+//    private String login;
+//    private String password;
+//    private String email;
     @Column(name = "firstname",nullable = false,length = 50)
     private String firstname;
     @Column(name = "lastname",nullable = false,length = 50)
     private String lastname;
-   // private String type;
+    @Column(name = "type")
+    private String type;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactions;
+
+    public UserEntity() {
+    }
 
 
     public Integer getId() {

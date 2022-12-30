@@ -10,19 +10,16 @@ import java.util.List;
 @Table(name = "ejbank_customer")
 @DiscriminatorValue(value = "customer")
 public class CustomerEntity extends UserEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advisor_id", nullable = false)
     private AdvisorEntity advisor;
-    @OneToMany(mappedBy = "customer_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<AccountEntity> accounts;
 
-    public Integer getId() {
-        return id;
+    public CustomerEntity() {
     }
+
     public AdvisorEntity getAdvisor() {
         return advisor;
     }

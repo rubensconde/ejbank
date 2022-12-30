@@ -8,17 +8,15 @@ import java.util.List;
 @Table(name = "ejbank_advisor")
 @DiscriminatorValue(value = "advisor")
 public class AdvisorEntity extends UserEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
 
-    @OneToMany(mappedBy = "advisor_id", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL)
     private List<CustomerEntity> customers;
 
-    @Override
-    public Integer getId() {
-        return id;
+    public AdvisorEntity() {
     }
+
+
     public List<CustomerEntity> getCustomers() {
         return customers;
     }

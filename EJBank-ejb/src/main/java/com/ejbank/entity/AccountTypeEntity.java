@@ -9,16 +9,20 @@ import java.util.List;
 @Table(name = "ejbank_account_type")
 public class AccountTypeEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column
+    @Column(name = "name")
     private String name;
-    @Column
+    @Column(name = "rate")
     private BigDecimal rate;
-    @Column
+    @Column(name = "overdraft")
     private Integer overdraft;
-    @OneToMany(mappedBy = "account_type_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
     private List<AccountEntity> accounts;
+
+    public AccountTypeEntity() {
+    }
+
     public Integer getId() {
         return id;
     }

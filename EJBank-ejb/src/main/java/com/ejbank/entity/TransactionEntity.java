@@ -3,34 +3,43 @@ package com.ejbank.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "ejbank_transaction")
 public class TransactionEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "account_id_from", nullable = false)
+    @JoinColumn(name = "accountFrom", nullable = false)
     private AccountEntity accountFrom;
+
     @ManyToOne
-    @JoinColumn(name = "account_id_to", nullable = false)
+    @JoinColumn(name = "accountTo", nullable = false)
     private AccountEntity accountTo;
+
     @ManyToOne
     @JoinColumn(name = "author")
     private UserEntity author;
 
-    @Column
+    @Column(name = "amount")
     private BigDecimal amount;
-    @Column
+
+    @Column(name = "comment")
     private String comment;
-    @Column
+
+    @Column(name = "applied")
     private Boolean applied;
-    @Column
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
     private Date date;
+
+    public TransactionEntity() {
+    }
 
 
     public Integer getId() {
@@ -71,5 +80,17 @@ public class TransactionEntity implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public AccountEntity getAccountFrom() {
+        return accountFrom;
+    }
+
+    public AccountEntity getAccountTo() {
+        return accountTo;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
     }
 }

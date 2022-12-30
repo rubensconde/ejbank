@@ -11,7 +11,7 @@ public class AccountEntity implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,13 +20,15 @@ public class AccountEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_type_id", nullable = false)
     private AccountTypeEntity type;
-    @Column
+    @Column(name = "balance")
     private BigDecimal balance;
-    @OneToMany(mappedBy = "account_id_from", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accountFrom", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactionsFrom;
-    @OneToMany(mappedBy = "account_id_to", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accountTo", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactionsTo;
 
+    public AccountEntity() {
+    }
 
 
     public Integer getId() {
