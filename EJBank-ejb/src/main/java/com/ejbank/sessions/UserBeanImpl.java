@@ -1,5 +1,6 @@
 package com.ejbank.sessions;
 
+import com.ejbank.beans.UserBean;
 import com.ejbank.entity.UserEntity;
 import com.ejbank.payload.UserPayload;
 

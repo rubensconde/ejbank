@@ -1,4 +1,4 @@
-package com.ejbank.test;
+package com.ejbank.beans;
 
 import javax.ejb.Local;
 

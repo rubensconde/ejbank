@@ -1,4 +1,6 @@
-package com.ejbank.test;
+package com.ejbank.sessions;
+
+import com.ejbank.beans.TestBeanLocal;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;

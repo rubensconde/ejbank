@@ -2,7 +2,7 @@ package com.ejbank.api;
 
 
 import com.ejbank.payload.AccountPayload;
-import com.ejbank.test.TestAccountBean;
+import com.ejbank.beans.TestAccountBean;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

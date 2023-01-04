@@ -1,7 +1,7 @@
 package com.ejbank.api;
 
 import com.ejbank.payload.UserPayload;
-import com.ejbank.test.TestBeanLocal;
+import com.ejbank.beans.TestBeanLocal;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;

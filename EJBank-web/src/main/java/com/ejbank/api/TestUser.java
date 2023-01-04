@@ -1,8 +1,7 @@
 package com.ejbank.api;
 
 import com.ejbank.payload.UserPayload;
-import com.ejbank.sessions.UserBean;
-import com.ejbank.test.TestAccountBean;
+import com.ejbank.beans.UserBean;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

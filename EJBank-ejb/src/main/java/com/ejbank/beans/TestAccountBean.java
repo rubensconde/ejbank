@@ -1,7 +1,6 @@
-package com.ejbank.test;
+package com.ejbank.beans;
 
 import com.ejbank.payload.AccountPayload;
-import com.ejbank.payload.UserPayload;
 
 import javax.ejb.Local;
 import java.util.List;

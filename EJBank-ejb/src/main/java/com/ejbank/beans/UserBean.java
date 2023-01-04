@@ -1,4 +1,4 @@
-package com.ejbank.sessions;
+package com.ejbank.beans;
 
 import com.ejbank.payload.UserPayload;
 
