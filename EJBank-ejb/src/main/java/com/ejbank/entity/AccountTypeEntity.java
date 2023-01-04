@@ -11,11 +11,11 @@ public class AccountTypeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "rate")
+    @Column(name = "rate", nullable = false)
     private BigDecimal rate;
-    @Column(name = "overdraft")
+    @Column(name = "overdraft", nullable = false)
     private Integer overdraft;
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
     private List<AccountEntity> accounts;

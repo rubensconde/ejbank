@@ -21,7 +21,7 @@ public class UserEntity implements Serializable {
     private String firstname;
     @Column(name = "lastname",nullable = false,length = 50)
     private String lastname;
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
@@ -71,10 +71,10 @@ public class UserEntity implements Serializable {
         this.lastname = lastname;
     }
 
-//    public String getType() {
-//        return type;
-//    }
-//
+    public String getType() {
+        return type;
+    }
+
 //    public void setType(String type) {
 //        this.type = type;
 //    }

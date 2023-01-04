@@ -2,8 +2,11 @@ package com.ejbank.sessions;
 
 
 import com.ejbank.entity.AccountEntity;
+import com.ejbank.entity.CustomerEntity;
+import com.ejbank.entity.UserEntity;
 import com.ejbank.payload.AccountPayload;
 import com.ejbank.beans.TestAccountBean;
+import com.ejbank.payload.ListAccountPayload;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -19,16 +22,19 @@ public class AccountBeanImpl implements TestAccountBean {
     @PersistenceContext(unitName = "EJBankPU")
     private EntityManager em;
 
-
-
-
-
-    public List<AccountPayload> getAccounts(Integer id) {
-        String query ="SELECT * FROM ejbank_account WHERE id = "+id;
-        List<AccountEntity> accountList = em.createQuery(query).getResultList();
-        List<AccountPayload> payloadList = new ArrayList<>();
-        accountList.stream().forEach(a->payloadList.add(new AccountPayload(a.getId(),a.getType().getName(),a.getBalance())));
-        return payloadList;
+    public ListAccountPayload getAccounts(Integer id) {
+        UserEntity user = em.find(UserEntity.class,id);
+        System.out.println(user.getType());
+        if(user.getType().equals("customer")){
+            CustomerEntity customer = (CustomerEntity) user;
+            List<AccountPayload> payloadList = new ArrayList<>();
+            customer.getAccounts().stream().forEach(a->payloadList.add(new AccountPayload(a.getId(),a.getType().getName(),a.getBalance())));
+            return new ListAccountPayload(payloadList);
+        }
+        else{
+            System.out.println("AAAAAH");
+            return new ListAccountPayload("Id correspond to an advisor");
+        }
     }
 
 //    public Integer getNbCurrentTransactions(Integer id) {

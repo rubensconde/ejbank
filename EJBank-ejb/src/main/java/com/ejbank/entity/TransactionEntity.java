@@ -25,13 +25,13 @@ public class TransactionEntity implements Serializable {
     @JoinColumn(name = "author")
     private UserEntity author;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "applied")
+    @Column(name = "applied", nullable = false)
     private Boolean applied;
 
     @Temporal(TemporalType.TIMESTAMP)

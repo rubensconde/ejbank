@@ -3,6 +3,7 @@ package com.ejbank.api;
 
 import com.ejbank.payload.AccountPayload;
 import com.ejbank.beans.TestAccountBean;
+import com.ejbank.payload.ListAccountPayload;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -24,7 +25,7 @@ public class TestAccounts {
 
     @GET
     @Path("/{user_id}")
-    public List<AccountPayload> getAccounts(@PathParam("user_id") Integer id) {
+    public ListAccountPayload getAccounts(@PathParam("user_id") Integer id) {
         return accountBean.getAccounts(id);
     }
 
