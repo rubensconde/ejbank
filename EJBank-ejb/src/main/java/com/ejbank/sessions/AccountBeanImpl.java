@@ -32,7 +32,6 @@ public class AccountBeanImpl implements TestAccountBean {
             return new ListAccountPayload(payloadList);
         }
         else{
-            System.out.println("AAAAAH");
             return new ListAccountPayload("Id correspond to an advisor");
         }
     }
