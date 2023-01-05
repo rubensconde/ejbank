@@ -22,13 +22,23 @@ public class TestTransaction {
         return transactionBean.getNotAppliedTransactions(id);
     }
     @GET
-    @Path("/transaction/list/{account_id}/{offset}/{user_id}")
+    @Path("/list/{account_id}/{offset}/{user_id}")
     public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") Integer offset, @PathParam("user_id") Integer userId) {
         return null; //TODO
     }
     @POST
-    @Path("/transaction/validation")
-    public Integer validateTransaction(@PathParam("user_id") Integer id) {
+    @Path("/validation")
+    public Integer validateTransaction() {
+        return null; //TODO
+    }
+    @POST
+    @Path("/preview")
+    public Integer previewTransaction() {
+        return null; //TODO
+    }
+    @POST
+    @Path("/apply")
+    public Integer applyTransaction() {
         return null; //TODO
     }
 }

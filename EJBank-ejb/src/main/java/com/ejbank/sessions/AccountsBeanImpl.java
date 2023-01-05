@@ -57,8 +57,26 @@ public class AccountsBeanImpl implements AccountsBean {
         }
     }
 
-//    public Integer getNbCurrentTransactions(Integer id) {
-//        var transactions = em.find(TransactionEntity.class,id);
-//        return transactions;
-//    }
+    public ListAccountPayload getAllAccounts(Integer id) {
+        UserEntity user = em.find(UserEntity.class,id);
+        if(user.getType().equals("advisor")){
+            AdvisorEntity advisor = (AdvisorEntity) user;
+            List<AccountPayload> payloadList = new ArrayList<>();
+            advisor.getCustomers().forEach(c->{
+                c.getAccounts().stream().forEach(a->{
+                    CustomerEntity owner = a.getCustomer();
+                    String strOwner = owner.getFirstname()+" "+owner.getLastname();
+                    payloadList.add(new AccountPayload(a.getId(),strOwner,a.getType().getName(),a.getBalance()));
+                });
+            }); //TODO add validation field
+            return new ListAccountPayload(payloadList);
+        }
+        else{
+            CustomerEntity customer = (CustomerEntity) user;
+            String strOwner = user.getFirstname()+" "+user.getLastname();
+            List<AccountPayload> payloadList = new ArrayList<>();
+            customer.getAccounts().stream().forEach(a->payloadList.add(new AccountPayload(a.getId(),strOwner,a.getType().getName(),a.getBalance())));
+            return new ListAccountPayload(payloadList);
+        }
+    }
 }
