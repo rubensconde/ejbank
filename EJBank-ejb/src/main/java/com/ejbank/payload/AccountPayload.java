@@ -12,6 +12,8 @@ public class AccountPayload {
     private String owner;
     private String advisor;
     private BigDecimal rate;
+
+
     private BigDecimal interest;
     private String error;
 
@@ -47,6 +49,8 @@ public class AccountPayload {
     public String getOwner() { return owner; }
 
     public String getAdvisor() { return advisor; }
+
+    public BigDecimal getInterest() { return interest; }
 
     public BigDecimal getRate() { return rate; }
 

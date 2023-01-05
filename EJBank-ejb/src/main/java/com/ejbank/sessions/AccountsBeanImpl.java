@@ -1,6 +1,7 @@
 package com.ejbank.sessions;
 
 
+import com.ejbank.entity.AdvisorEntity;
 import com.ejbank.entity.CustomerEntity;
 import com.ejbank.entity.UserEntity;
 import com.ejbank.payload.AccountPayload;
@@ -23,7 +24,6 @@ public class AccountsBeanImpl implements AccountsBean {
 
     public ListAccountPayload getAccounts(Integer id) {
         UserEntity user = em.find(UserEntity.class,id);
-        System.out.println(user.getType());
         if(user.getType().equals("customer")){
             CustomerEntity customer = (CustomerEntity) user;
             List<AccountPayload> payloadList = new ArrayList<>();
@@ -32,6 +32,20 @@ public class AccountsBeanImpl implements AccountsBean {
         }
         else{
             return new ListAccountPayload("Id correspond to an advisor");
+        }
+    }
+
+    public ListAccountPayload getAttachedAccounts(Integer id) {
+        UserEntity user = em.find(UserEntity.class,id);
+        System.out.println(user.getType());
+        if(user.getType().equals("advisor")){
+            AdvisorEntity advisor = (AdvisorEntity) user;
+            List<AccountPayload> payloadList = new ArrayList<>();
+            advisor.getCustomers().forEach(c->c.getAccounts().stream().forEach(a->payloadList.add(new AccountPayload(a.getId(),a.getType().getName(),a.getBalance())))); //TODO add validation field
+            return new ListAccountPayload(payloadList);
+        }
+        else{
+            return new ListAccountPayload("Id correspond to a customer");
         }
     }
 

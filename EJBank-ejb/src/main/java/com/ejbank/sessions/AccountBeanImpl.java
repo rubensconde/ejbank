@@ -13,6 +13,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,15 @@ public class AccountBeanImpl implements AccountBean {
             List<AccountEntity> accountList = customer.getAccounts();
             var account = accountList.stream().filter(a->a.getId()==accountId).toList().get(0);
             //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
-            return new AccountPayload(customer.toString(), customer.getAdvisor().toString(),account.getType().getRate(),account.getBalance(),account.getBalance());
+            String strCustomer = customer.getFirstname()+" "+customer.getLastname()+" (client)";
+            String strAdvisor = customer.getAdvisor().getFirstname()+" "+customer.getAdvisor().getLastname()+" (conseillé)";
+            if(account.getType().getName().equals("Courant")){
+                return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
+
+            }else{
+                return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),account.getBalance(),account.getBalance());
+
+            }
         }
         else{
             return new AccountPayload("it's an advisor");

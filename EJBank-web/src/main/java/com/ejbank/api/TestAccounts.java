@@ -27,4 +27,16 @@ public class TestAccounts {
         return accountsBean.getAccounts(id);
     }
 
+    @GET
+    @Path("/attached/{user_id}")
+    public ListAccountPayload getAttachedAccounts(@PathParam("user_id") Integer id) {
+        return accountsBean.getAttachedAccounts(id);
+    }
+
+    @GET
+    @Path("/attached/all/{user_id}")
+    public ListAccountPayload getAllAccounts(@PathParam("user_id") Integer id) {
+        return accountsBean.getAttachedAccounts(id);//TODO getAllAccounts
+    }
+
 }

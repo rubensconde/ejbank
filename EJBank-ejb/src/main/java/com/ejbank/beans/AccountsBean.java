@@ -9,4 +9,6 @@ import java.util.List;
 @Local
 public interface AccountsBean {
     ListAccountPayload getAccounts(Integer id);
+
+    ListAccountPayload getAttachedAccounts(Integer id);
 }
