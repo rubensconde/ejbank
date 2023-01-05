@@ -23,7 +23,7 @@ public class TestTransaction {
     }
     @GET
     @Path("/transaction/list/{account_id}/{offset}/{user_id}")
-    public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") int offset, @PathParam("user_id") Integer userId) {
+    public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") Integer offset, @PathParam("user_id") Integer userId) {
         return null; //TODO
     }
     @POST
