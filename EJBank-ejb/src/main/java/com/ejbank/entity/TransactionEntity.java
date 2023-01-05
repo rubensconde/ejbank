@@ -50,6 +50,24 @@ public class TransactionEntity implements Serializable {
         this.id = id;
     }
 
+    public AccountEntity getAccountFrom() {
+        return accountFrom;
+    }
+
+    public void setAccountFrom(AccountEntity accountFrom) { this.accountFrom = accountFrom; }
+
+    public AccountEntity getAccountTo() {
+        return accountTo;
+    }
+
+    public void setAccountTo(AccountEntity accountTo) { this.accountTo = accountTo; }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserEntity author) { this.author = author; }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -82,15 +100,4 @@ public class TransactionEntity implements Serializable {
         this.date = date;
     }
 
-    public AccountEntity getAccountFrom() {
-        return accountFrom;
-    }
-
-    public AccountEntity getAccountTo() {
-        return accountTo;
-    }
-
-    public UserEntity getAuthor() {
-        return author;
-    }
 }

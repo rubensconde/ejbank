@@ -12,6 +12,10 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 public class CheckServer {
 
+    /**
+     * Check server status and return a boolean true if the method is done.
+     * @return ServerPayload
+     */
     @GET
     @Path("/status")
     public ServerPayload getStatus() {

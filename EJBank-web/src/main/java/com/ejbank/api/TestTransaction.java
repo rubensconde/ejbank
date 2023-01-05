@@ -1,8 +1,10 @@
 package com.ejbank.api;
 
 import com.ejbank.beans.TransactionBean;
+import com.ejbank.payload.AccountPayload;
 import com.ejbank.payload.ListAccountPayload;
 import com.ejbank.payload.ListTransactionPayload;
+import com.ejbank.payload.TransactionPayload;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -16,24 +18,48 @@ public class TestTransaction {
     @EJB
     private TransactionBean transactionBean;
 
+    /**
+     * Find and return the number of not applied transactions.
+     * @param id
+     * @return Integer
+     */
     @GET
     @Path("/validation/notification/{user_id}")
     public Integer getNotAppliedTransaction(@PathParam("user_id") Integer id) {
         return transactionBean.getNotAppliedTransactions(id);
     }
+
+    /**
+     * Find and return some transactions associated to the accountId and the userId according to the offset given. The ListTransactionPayload is composed with total value and a List of TransactionPayload composed with id, date, source, destination, destination_user or source_user, amount, author, optional comment and state.
+     * @param accountId
+     * @param offset
+     * @param userId
+     * @return ListTransactionPayload
+     */
     @GET
     @Path("/list/{account_id}/{offset}/{user_id}")
     public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") Integer offset, @PathParam("user_id") Integer userId) {
         return null; //TODO
     }
+
+    /**
+     * Post the validation of transaction
+     * @return Integer
+     */
     @POST
     @Path("/validation")
-    public Integer validateTransaction() {
+    public TransactionPayload validateTransaction() {
         return null; //TODO
     }
+
+    /**
+     * Post the preview of the transaction
+     * @param transaction
+     * @return
+     */
     @POST
     @Path("/preview")
-    public Integer previewTransaction() {
+    public Integer previewTransaction(TransactionPayload transaction) {
         return null; //TODO
     }
     @POST

@@ -68,7 +68,7 @@ public class AccountsBeanImpl implements AccountsBean {
                     String strOwner = owner.getFirstname()+" "+owner.getLastname();
                     payloadList.add(new AccountPayload(a.getId(),strOwner,a.getType().getName(),a.getBalance()));
                 });
-            }); //TODO add validation field
+            });
             return new ListAccountPayload(payloadList);
         }
         else{

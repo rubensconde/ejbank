@@ -19,6 +19,11 @@ public class TestUser {
     private UserBean userBean;
 
 
+    /**
+     * Find user with giving id and return a payload composed with firstname and lastname
+     * @param id
+     * @return UserPayload
+     */
     @GET
     @Path("/{user_id}")
     public UserPayload getUser(@PathParam("user_id") Integer id) {
