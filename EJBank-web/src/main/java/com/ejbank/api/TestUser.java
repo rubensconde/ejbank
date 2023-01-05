@@ -16,12 +16,12 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 public class TestUser {
     @EJB
-    private UserBean accountBean;
+    private UserBean userBean;
 
 
     @GET
     @Path("/{user_id}")
     public UserPayload getUser(@PathParam("user_id") Integer id) {
-        return accountBean.getUser(id);
+        return userBean.getUser(id);
     }
 }

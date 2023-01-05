@@ -14,11 +14,11 @@ public class TransactionEntity implements Serializable {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "accountFrom", nullable = false)
+    @JoinColumn(name = "account_id_from", nullable = false)
     private AccountEntity accountFrom;
 
     @ManyToOne
-    @JoinColumn(name = "accountTo", nullable = false)
+    @JoinColumn(name = "account_id_to", nullable = false)
     private AccountEntity accountTo;
 
     @ManyToOne

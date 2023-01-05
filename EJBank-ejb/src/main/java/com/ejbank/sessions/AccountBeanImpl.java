@@ -1,11 +1,12 @@
 package com.ejbank.sessions;
 
 
+import com.ejbank.beans.AccountBean;
 import com.ejbank.entity.AccountEntity;
+import com.ejbank.entity.AdvisorEntity;
 import com.ejbank.entity.CustomerEntity;
 import com.ejbank.entity.UserEntity;
 import com.ejbank.payload.AccountPayload;
-import com.ejbank.beans.TestAccountBean;
 import com.ejbank.payload.ListAccountPayload;
 
 import javax.ejb.LocalBean;
@@ -17,27 +18,23 @@ import java.util.List;
 
 @Stateless
 @LocalBean
-public class AccountBeanImpl implements TestAccountBean {
+public class AccountBeanImpl implements AccountBean {
 
     @PersistenceContext(unitName = "EJBankPU")
     private EntityManager em;
 
-    public ListAccountPayload getAccounts(Integer id) {
-        UserEntity user = em.find(UserEntity.class,id);
+    public AccountPayload getAccount(Integer accountId, Integer userId) {
+        UserEntity user = em.find(UserEntity.class,userId);
         System.out.println(user.getType());
         if(user.getType().equals("customer")){
             CustomerEntity customer = (CustomerEntity) user;
-            List<AccountPayload> payloadList = new ArrayList<>();
-            customer.getAccounts().stream().forEach(a->payloadList.add(new AccountPayload(a.getId(),a.getType().getName(),a.getBalance())));
-            return new ListAccountPayload(payloadList);
+            List<AccountEntity> accountList = customer.getAccounts();
+            var account = accountList.stream().filter(a->a.getId()==accountId).toList().get(0);
+            //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
+            return new AccountPayload(customer.toString(), customer.getAdvisor().toString(),account.getType().getRate(),account.getBalance(),account.getBalance());
         }
         else{
-            return new ListAccountPayload("Id correspond to an advisor");
+            return new AccountPayload("it's an advisor");
         }
     }
-
-//    public Integer getNbCurrentTransactions(Integer id) {
-//        var transactions = em.find(TransactionEntity.class,id);
-//        return transactions;
-//    }
 }

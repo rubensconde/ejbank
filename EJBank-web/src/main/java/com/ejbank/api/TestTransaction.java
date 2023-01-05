@@ -1,7 +1,6 @@
 package com.ejbank.api;
 
-
-import com.ejbank.beans.AccountsBean;
+import com.ejbank.beans.TransactionBean;
 import com.ejbank.payload.ListAccountPayload;
 
 import javax.ejb.EJB;
@@ -12,19 +11,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/accounts")
+@Path("/transaction")
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
-public class TestAccounts {
-
+public class TestTransaction {
     @EJB
-    private AccountsBean accountsBean;
-
+    private TransactionBean transactionBean;
 
     @GET
-    @Path("/{user_id}")
-    public ListAccountPayload getAccounts(@PathParam("user_id") Integer id) {
-        return accountsBean.getAccounts(id);
+    @Path("/validation/notification/{user_id}")
+    public Integer getNotAppliedTransaction(@PathParam("user_id") Integer id) {
+        return transactionBean.getNotAppliedTransactions(id);
     }
-
 }

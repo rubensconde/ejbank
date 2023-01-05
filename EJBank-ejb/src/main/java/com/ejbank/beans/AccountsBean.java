@@ -7,7 +7,6 @@ import javax.ejb.Local;
 import java.util.List;
 
 @Local
-public interface TestAccountBean {
+public interface AccountsBean {
     ListAccountPayload getAccounts(Integer id);
-   // Integer getNbCurrentTransactions(Integer id);
 }
