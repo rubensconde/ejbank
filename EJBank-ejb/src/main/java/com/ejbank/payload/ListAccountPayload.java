@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ListAccountPayload {
-    private final List<AccountPayload> accounts;
-    private final String error;
+    private List<AccountPayload> accounts;
+    private String error;
+
     public ListAccountPayload(List<AccountPayload> accounts) {
         this.accounts = accounts;
         this.error=null;

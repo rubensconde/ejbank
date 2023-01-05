@@ -41,7 +41,15 @@ public class AccountsBeanImpl implements AccountsBean {
         if(user.getType().equals("advisor")){
             AdvisorEntity advisor = (AdvisorEntity) user;
             List<AccountPayload> payloadList = new ArrayList<>();
-            advisor.getCustomers().forEach(c->c.getAccounts().stream().forEach(a->payloadList.add(new AccountPayload(a.getId(),a.getType().getName(),a.getBalance())))); //TODO add validation field
+            advisor.getCustomers().forEach(c->{
+                c.getAccounts().stream().forEach(a->{
+                    int nbNotAppliedFrom =a.getTransactionsFrom().stream().filter(t-> !t.getApplied()).toList().size();
+                    int nbNotAppliedTo =a.getTransactionsTo().stream().filter(t-> !t.getApplied()).toList().size();
+                    CustomerEntity owner = a.getCustomer();
+                    String strOwner = owner.getFirstname()+" "+owner.getLastname();
+                    payloadList.add(new AccountPayload(a.getId(),strOwner,a.getType().getName(),a.getBalance(),nbNotAppliedFrom+nbNotAppliedTo));
+                });
+            }); //TODO add validation field
             return new ListAccountPayload(payloadList);
         }
         else{

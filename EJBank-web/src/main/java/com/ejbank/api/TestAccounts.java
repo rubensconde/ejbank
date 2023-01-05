@@ -34,7 +34,7 @@ public class TestAccounts {
     }
 
     @GET
-    @Path("/attached/all/{user_id}")
+    @Path("/all/{user_id}")
     public ListAccountPayload getAllAccounts(@PathParam("user_id") Integer id) {
         return accountsBean.getAttachedAccounts(id);//TODO getAllAccounts
     }
