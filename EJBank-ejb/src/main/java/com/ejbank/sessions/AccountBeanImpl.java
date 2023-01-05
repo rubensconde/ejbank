@@ -30,16 +30,21 @@ public class AccountBeanImpl implements AccountBean {
         if(user.getType().equals("customer")){
             CustomerEntity customer = (CustomerEntity) user;
             List<AccountEntity> accountList = customer.getAccounts();
-            var account = accountList.stream().filter(a->a.getId()==accountId).toList().get(0);
-            //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
-            String strCustomer = customer.getFirstname()+" "+customer.getLastname()+" (client)";
-            String strAdvisor = customer.getAdvisor().getFirstname()+" "+customer.getAdvisor().getLastname()+" (conseillé)";
-            if(account.getType().getName().equals("Courant")){
-                return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
-
+            var accountMatchedList = accountList.stream().filter(a->a.getId()==accountId).toList();
+            if(accountMatchedList.isEmpty()){
+                return new AccountPayload("it's not one of your account");
             }else{
-                return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),account.getBalance(),account.getBalance());
+                //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
+                AccountEntity account =accountMatchedList.get(0);
+                String strCustomer = customer.getFirstname()+" "+customer.getLastname()+" (client)";
+                String strAdvisor = customer.getAdvisor().getFirstname()+" "+customer.getAdvisor().getLastname()+" (conseillé)";
+                if(account.getType().getName().equals("Courant")){
+                    return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
 
+                }else{
+                    return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),account.getBalance(),account.getBalance());
+
+                }
             }
         }
         else{

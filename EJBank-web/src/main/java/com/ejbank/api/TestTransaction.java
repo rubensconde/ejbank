@@ -2,13 +2,11 @@ package com.ejbank.api;
 
 import com.ejbank.beans.TransactionBean;
 import com.ejbank.payload.ListAccountPayload;
+import com.ejbank.payload.ListTransactionPayload;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/transaction")
@@ -22,5 +20,15 @@ public class TestTransaction {
     @Path("/validation/notification/{user_id}")
     public Integer getNotAppliedTransaction(@PathParam("user_id") Integer id) {
         return transactionBean.getNotAppliedTransactions(id);
+    }
+    @GET
+    @Path("/transaction/list/{account_id}/{offset}/{user_id}")
+    public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") int offset, @PathParam("user_id") Integer userId) {
+        return null; //TODO
+    }
+    @POST
+    @Path("/transaction/validation")
+    public Integer validateTransaction(@PathParam("user_id") Integer id) {
+        return null; //TODO
     }
 }
