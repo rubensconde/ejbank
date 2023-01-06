@@ -15,7 +15,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Stateless
 @LocalBean
@@ -34,21 +36,39 @@ public class AccountBeanImpl implements AccountBean {
             if(accountMatchedList.isEmpty()){
                 return new AccountPayload("it's not one of your account");
             }else{
-                //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
                 AccountEntity account =accountMatchedList.get(0);
-                String strCustomer = customer.getFirstname()+" "+customer.getLastname()+" (client)";
-                String strAdvisor = customer.getAdvisor().getFirstname()+" "+customer.getAdvisor().getLastname()+" (conseillé)";
-                if(account.getType().getName().equals("Courant")){
-                    return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
-
-                }else{
-                    return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),account.getBalance(),account.getBalance());
-
-                }
+                return computeInfos(customer,account);
             }
         }
         else{
-            return new AccountPayload("it's an advisor");
+            AdvisorEntity advisor = (AdvisorEntity) user;
+            AccountEntity account = advisor.getCustomers().stream().map(CustomerEntity::getAccounts).flatMap(Collection::stream).filter(acc -> Objects.equals(acc.getId(), accountId)).findFirst().orElse(null);
+            if(account == null){
+                return new AccountPayload("it's not one of your account");
+            }
+            else{
+                return computeInfos(advisor,account);
+            }
+        }
+    }
+
+    private static AccountPayload computeInfos(UserEntity user, AccountEntity account){
+        String strCustomer = account.getCustomer().getFirstname()+" "+account.getCustomer().getLastname()+" (client)";
+        String strAdvisor = null;
+        if(user.getType().equals("customer")){
+            CustomerEntity customer = (CustomerEntity) user;
+            AdvisorEntity myAdvisor =customer.getAdvisor();
+            strAdvisor = myAdvisor.getFirstname()+" "+myAdvisor.getLastname()+" (conseillé)";
+        }else{
+            strAdvisor = user.getFirstname()+" "+user.getLastname()+" (conseillé)";
+        }
+
+        if(account.getType().getName().equals("Courant")){
+            return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
+
+        }else{
+            //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
+            return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),account.getBalance(),account.getBalance());
         }
     }
 }

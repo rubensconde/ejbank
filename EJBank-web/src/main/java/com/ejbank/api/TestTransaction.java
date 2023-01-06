@@ -1,10 +1,7 @@
 package com.ejbank.api;
 
 import com.ejbank.beans.TransactionBean;
-import com.ejbank.payload.AccountPayload;
-import com.ejbank.payload.ListAccountPayload;
-import com.ejbank.payload.ListTransactionPayload;
-import com.ejbank.payload.TransactionPayload;
+import com.ejbank.payload.*;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -39,7 +36,7 @@ public class TestTransaction {
     @GET
     @Path("/list/{account_id}/{offset}/{user_id}")
     public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") Integer offset, @PathParam("user_id") Integer userId) {
-        return null; //TODO
+        return null;
     }
 
     /**
@@ -59,12 +56,18 @@ public class TestTransaction {
      */
     @POST
     @Path("/preview")
-    public Integer previewTransaction(TransactionPayload transaction) {
-        return null; //TODO
+    public ValidationPayload previewTransaction(TransactionPayload transaction) {
+        return transactionBean.transactionDetails(transaction);
     }
+
+    /**
+     * Post the validattion of the transaction
+     * @param transaction
+     * @return
+     */
     @POST
     @Path("/apply")
-    public Integer applyTransaction() {
-        return null; //TODO
+    public ValidationPayload applyTransaction(TransactionPayload transaction) {
+        return transactionBean.applyTransaction(transaction);
     }
 }
