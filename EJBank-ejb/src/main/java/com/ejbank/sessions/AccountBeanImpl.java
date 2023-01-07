@@ -42,7 +42,7 @@ public class AccountBeanImpl implements AccountBean {
         }
         else{
             AdvisorEntity advisor = (AdvisorEntity) user;
-            AccountEntity account = advisor.getCustomers().stream().map(CustomerEntity::getAccounts).flatMap(Collection::stream).filter(acc -> Objects.equals(acc.getId(), accountId)).findFirst().orElse(null);
+            AccountEntity account = advisor.getCustomers().stream().map(CustomerEntity::getAccounts).flatMap(Collection::stream).filter(a -> Objects.equals(a.getId(), accountId)).findFirst().orElse(null);
             if(account == null){
                 return new AccountPayload("it's not one of your account");
             }

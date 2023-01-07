@@ -26,17 +26,16 @@ public class TransactionBeanImpl implements TransactionBean {
         System.out.println(user.getType());
         if(user.getType().equals("customer")){
             CustomerEntity customer = (CustomerEntity) user;
-            List<TransactionEntity> transactions = customer.getTransactions();
-            var nbNotApplied=transactions.stream().filter(t->!t.getApplied()).toList().size(); //emptyList ornull?
-            System.out.println(nbNotApplied);
-            return nbNotApplied;
+            int nbNotAppliedTransactionsTo = customer.getAccounts().stream().map(AccountEntity::getTransactionsTo).flatMap(Collection::stream).filter(t->!t.getApplied()).toList().size();
+            int nbNotAppliedTransactionsFrom = customer.getAccounts().stream().map(AccountEntity::getTransactionsFrom).flatMap(Collection::stream).filter(t->!t.getApplied()).toList().size();
+            return nbNotAppliedTransactionsTo+nbNotAppliedTransactionsFrom;
         }
         else{
             //TODO Correct this part and check with the API that it's good, do the same changes in AccountBeanImpl for getAccount()
             AdvisorEntity advisor = (AdvisorEntity) user;
-            int nbNotApplied = advisor.getCustomers().stream().mapToInt(c -> c.getTransactions().stream().filter(t -> !t.getApplied()).toList().size()).sum();
-            System.out.println(nbNotApplied);
-            return nbNotApplied;
+            int nbNotAppliedTransactionsTo = advisor.getCustomers().stream().map(CustomerEntity::getAccounts).flatMap(Collection::stream).map(AccountEntity::getTransactionsTo).flatMap(Collection::stream).filter(t->!t.getApplied()).toList().size();
+            int nbNotAppliedTransactionsFrom = advisor.getCustomers().stream().map(CustomerEntity::getAccounts).flatMap(Collection::stream).map(AccountEntity::getTransactionsFrom).flatMap(Collection::stream).filter(t->!t.getApplied()).toList().size();
+            return nbNotAppliedTransactionsTo+nbNotAppliedTransactionsFrom;
         }
     }
 
@@ -91,7 +90,13 @@ public class TransactionBeanImpl implements TransactionBean {
                 AccountEntity source =accountSourceList.get(0);
                 AccountEntity destination =accountDestinationList.get(0);
                 var oldBalance = source.getBalance();
-                return payloadApply(source,transaction,oldBalance);
+                if(isCorrectPreview(source,transaction,oldBalance)){
+                    //TODO Apply transaction INSERT IN DATABASE
+                    return new ValidationPayload(true,"transaction valid");
+                }
+                else{
+                    return new ValidationPayload(false, "transaction not valid");
+                }
 
             }
         }
@@ -105,7 +110,12 @@ public class TransactionBeanImpl implements TransactionBean {
             }
             else{
                 var oldBalance = source.getBalance();
-                return payloadApply(source,transaction,oldBalance);
+                if(isCorrectPreview(source,transaction,oldBalance)){
+                    return new ValidationPayload(true,"transaction valid");
+                }
+                else{
+                    return new ValidationPayload(false, "transaction not valid");
+                }
 
             }
         }
