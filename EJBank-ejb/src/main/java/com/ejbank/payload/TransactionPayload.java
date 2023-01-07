@@ -32,12 +32,16 @@ public class TransactionPayload {
                               UserEntity author,
                               String comment,
                               Boolean state){
+        if(destinationUser==null) {
+            this.sourceUser = sourceUser;
+        }
+        else{
+            this.destinationUser = destinationUser;
+        }
         this.id = id;
         this.date = date;
         this.accountFrom = sourceAccount;
         this.accountTo = destinationAccount;
-        this.destinationUser = destinationUser;
-        //this.sourceUser = sourceUser;
         this.amount = amount;
         this.author = author;
         this.comment = comment;

@@ -48,19 +48,37 @@ public class TransactionBeanImpl implements TransactionBean {
         query.setParameter("accountId","accountId");
         List<TransactionEntity> transactions = query.getResultList();
         transactions.subList(offset*nbTransactionsPage,(offset+1)*nbTransactionsPage);
-        //vérifier peut être si l'offset est trop grand
+        //TODO vérifier peut être si l'offset est trop grand
         List<TransactionPayload> payloadList = new ArrayList<>();
-        transactions.forEach(t-> payloadList.add(new TransactionPayload(t.getId(),
-                t.getDate(),
-                t.getAccountFrom(),
-                t.getAccountTo(),
-                t.getAuthor(),
-                t.getAuthor(),
-                t.getAmount(),
-                t.getAuthor(),
-                t.getComment(),
-                t.getApplied())));
-        System.out.println(payloadList);
+        transactions.forEach(t-> {
+            var author = t.getAuthor();
+            if(userId == author.getId()) {
+                System.out.println(t.getId()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                payloadList.add(new TransactionPayload(
+                        t.getId(),
+                        t.getDate(),
+                        t.getAccountFrom(),
+                        t.getAccountTo(),
+                        null,
+                        author,
+                        t.getAmount(),
+                        author,
+                        t.getComment(),
+                        t.getApplied()));
+            }
+            else {
+                payloadList.add(new TransactionPayload(t.getId(),
+                        t.getDate(),
+                        t.getAccountFrom(),
+                        t.getAccountTo(),
+                        t.getAccountFrom().getCustomer(),
+                        null,
+                        t.getAmount(),
+                        t.getAuthor(),
+                        t.getComment(),
+                        t.getApplied()));
+            }
+        });
         return new ListTransactionPayload(payloadList);
     }
 }
