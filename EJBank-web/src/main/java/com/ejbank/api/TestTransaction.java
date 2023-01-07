@@ -47,7 +47,7 @@ public class TestTransaction {
     @Path("/validation")
     public ApplyPayload validateTransaction(ValidationPayload validation) {
 
-        return transactionBean.validateTransaction(validation); 
+        return transactionBean.validateTransaction(validation);
     }
 
     /**
