@@ -1,47 +1,24 @@
 package com.ejbank.payload;
 
-import java.math.BigDecimal;
-
 public class ValidationPayload {
-    private Boolean result;
-    private BigDecimal before;
-    private BigDecimal after;
-    private String message;
-    private String error;
 
+    private Integer transaction;
+    private Boolean approve;
+    private Integer author;
 
-    public ValidationPayload(Boolean result, BigDecimal before, BigDecimal after, String message, String error) {
-        this.result = result;
-        this.before = before;
-        this.after = after;
-        this.message = message;
-        this.error = error;
-    }
-    public ValidationPayload(Boolean result, String message) {
-        this.result = result;
-        this.message = message;
-    }
-    public ValidationPayload(String error) {
-        this.error = error;
+    public ValidationPayload() {
     }
 
-    public Boolean getResult() {
-        return result;
-    }
+    public Integer getTransaction() { return transaction; }
 
-    public BigDecimal getBefore() {
-        return before;
-    }
+    public void setTransaction(Integer transaction) { this.transaction = transaction; }
 
-    public BigDecimal getAfter() {
-        return after;
-    }
+    public Boolean getApprove() { return approve; }
 
-    public String getMessage() {
-        return message;
-    }
+    public void setApprove(Boolean approve) { this.approve = approve; }
 
-    public String getError() {
-        return error;
-    }
+    public Integer getAuthor() { return author; }
+
+    public void setAuthor(Integer author) { this.author = author; }
+
 }

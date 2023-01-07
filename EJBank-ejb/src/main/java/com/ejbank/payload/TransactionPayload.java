@@ -59,6 +59,7 @@ public class TransactionPayload {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
     public Integer getAuthor() {
         return author;
     }
@@ -67,6 +68,7 @@ public class TransactionPayload {
         this.author = author;
     }
 
+    public String getComment() { return comment;}
 
     public void setComment(String comment) {
         this.comment = comment;

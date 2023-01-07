@@ -26,6 +26,14 @@ public class AccountBeanImpl implements AccountBean {
     @PersistenceContext(unitName = "EJBankPU")
     private EntityManager em;
 
+    /**
+     * Find the account accountId of a user define by userId. Returns :
+     * - Error payload if it's not one of our account or attached accounts
+     * - Returns a payload with account info composed of user firstname and lastName, advisor firstName and lastName, rate, computed interest of the year and balance of the account.
+     * @param accountId
+     * @param userId
+     * @return
+     */
     public AccountPayload getAccount(Integer accountId, Integer userId) {
         UserEntity user = em.find(UserEntity.class,userId);
         System.out.println(user.getType());
@@ -52,6 +60,12 @@ public class AccountBeanImpl implements AccountBean {
         }
     }
 
+    /**
+     * Compute the payload description of an account.
+     * @param user
+     * @param account
+     * @return AccountPayload
+     */
     private static AccountPayload computeInfos(UserEntity user, AccountEntity account){
         String strCustomer = account.getCustomer().getFirstname()+" "+account.getCustomer().getLastname()+" (client)";
         String strAdvisor = null;

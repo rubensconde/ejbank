@@ -9,6 +9,10 @@ import javax.ejb.Stateless;
 @LocalBean
 public class TestBean implements TestBeanLocal {
 
+    /**
+     * Just to test the server.
+     * @return String
+     */
     @Override
     public String test() {
         return "Hello from EJB";

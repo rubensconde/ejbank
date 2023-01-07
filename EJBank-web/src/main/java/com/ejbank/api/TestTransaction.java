@@ -45,8 +45,9 @@ public class TestTransaction {
      */
     @POST
     @Path("/validation")
-    public TransactionPayload validateTransaction() {
-        return null; //TODO
+    public ApplyPayload validateTransaction(ValidationPayload validation) {
+
+        return transactionBean.validateTransaction(validation); 
     }
 
     /**
@@ -56,7 +57,7 @@ public class TestTransaction {
      */
     @POST
     @Path("/preview")
-    public ValidationPayload previewTransaction(TransactionPayload transaction) {
+    public PreviewPayload previewTransaction(TransactionPayload transaction) {
         return transactionBean.transactionDetails(transaction);
     }
 
@@ -67,7 +68,7 @@ public class TestTransaction {
      */
     @POST
     @Path("/apply")
-    public ValidationPayload applyTransaction(TransactionPayload transaction) {
+    public ApplyPayload applyTransaction(TransactionPayload transaction) {
         return transactionBean.applyTransaction(transaction);
     }
 }

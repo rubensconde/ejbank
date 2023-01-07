@@ -16,6 +16,11 @@ public class UserBeanImpl implements UserBean {
     @PersistenceContext(unitName = "EJBankPU")
     private EntityManager em;
 
+    /**
+     * Find user defined by id and returns a payload composer with firstname and lastname of the user.
+     * @param id
+     * @return UserPayload
+     */
     public UserPayload getUser(Integer id) {
         var user = em.find(UserEntity.class, id);
         return new UserPayload(user.getFirstname(),user.getLastname());

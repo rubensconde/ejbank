@@ -41,6 +41,15 @@ public class TransactionEntity implements Serializable {
     public TransactionEntity() {
     }
 
+    public TransactionEntity(AccountEntity accountFrom, AccountEntity accountTo, UserEntity author, BigDecimal amount, String comment, Boolean applied, Date date) {
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
+        this.author = author;
+        this.amount = amount;
+        this.comment = comment;
+        this.applied = applied;
+        this.date = date;
+    }
 
     public Integer getId() {
         return id;

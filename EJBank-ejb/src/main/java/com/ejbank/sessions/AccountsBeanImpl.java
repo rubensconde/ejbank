@@ -22,6 +22,11 @@ public class AccountsBeanImpl implements AccountsBean {
     @PersistenceContext(unitName = "EJBankPU")
     private EntityManager em;
 
+    /**
+     * Find user define by userId and return a payload composed with a list of his accounts. An advisor has no accounts.
+     * @param id
+     * @return ListAccountPayload
+     */
     public ListAccountPayload getAccounts(Integer id) {
         UserEntity user = em.find(UserEntity.class,id);
         if(user.getType().equals("customer")){
@@ -35,6 +40,11 @@ public class AccountsBeanImpl implements AccountsBean {
         }
     }
 
+    /**
+     * Find user define by userId and return a payload composed with a list of his attachedaccounts. A customers has no attachedaccounts.
+     * @param id
+     * @return ListAccountPayload
+     */
     public ListAccountPayload getAttachedAccounts(Integer id) {
         UserEntity user = em.find(UserEntity.class,id);
         System.out.println(user.getType());
@@ -44,10 +54,9 @@ public class AccountsBeanImpl implements AccountsBean {
             advisor.getCustomers().forEach(c->{
                 c.getAccounts().stream().forEach(a->{
                     int nbNotAppliedFrom =a.getTransactionsFrom().stream().filter(t-> !t.getApplied()).toList().size();
-                    int nbNotAppliedTo =a.getTransactionsTo().stream().filter(t-> !t.getApplied()).toList().size();
                     CustomerEntity owner = a.getCustomer();
                     String strOwner = owner.getFirstname()+" "+owner.getLastname();
-                    payloadList.add(new AccountPayload(a.getId(),strOwner,a.getType().getName(),a.getBalance(),nbNotAppliedFrom+nbNotAppliedTo));
+                    payloadList.add(new AccountPayload(a.getId(),strOwner,a.getType().getName(),a.getBalance(),nbNotAppliedFrom));
                 });
             }); //TODO add validation field
             return new ListAccountPayload(payloadList);
@@ -57,6 +66,11 @@ public class AccountsBeanImpl implements AccountsBean {
         }
     }
 
+    /**
+     * Find user define by userId and return a payload composed with a list of his accounts or attachedaccounts.
+     * @param id
+     * @return ListAccountPayload
+     */
     public ListAccountPayload getAllAccounts(Integer id) {
         UserEntity user = em.find(UserEntity.class,id);
         if(user.getType().equals("advisor")){
