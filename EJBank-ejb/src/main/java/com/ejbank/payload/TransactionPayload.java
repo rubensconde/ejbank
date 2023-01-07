@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class TransactionPayload {
+
     private Integer id;
     private Date date;
     private AccountEntity accountFrom;
@@ -41,5 +42,53 @@ public class TransactionPayload {
         this.author = author;
         this.comment = comment;
         this.applied = state;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public AccountEntity getAccountFrom() {
+        return accountFrom;
+    }
+
+    public AccountEntity getAccountTo() {
+        return accountTo;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Boolean getApplied() {
+        return applied;
+    }
+
+    public UserEntity getDestinationUser() {
+        return destinationUser;
+    }
+
+    public UserEntity getSourceUser() {
+        return sourceUser;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public int getTotal() {
+        return total;
     }
 }
