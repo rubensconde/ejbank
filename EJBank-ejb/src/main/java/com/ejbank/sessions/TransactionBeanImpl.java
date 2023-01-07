@@ -44,25 +44,26 @@ public class TransactionBeanImpl implements TransactionBean {
     @Override
     public ListTransactionPayload getTransactions(Integer accountId, Integer offset, Integer userId) {
         var nbTransactionsPage = 3;
-        var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom = :accountId OR t.accountTo = :accountId");
-        query.setParameter("accountId","accountId");
+        var accountEntity = em.find(AccountEntity.class,accountId);
+        var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom = :accountEntity OR t.accountTo = :accountEntity");
+        query.setParameter("accountEntity",accountEntity);
         List<TransactionEntity> transactions = query.getResultList();
+
         transactions.subList(offset*nbTransactionsPage,(offset+1)*nbTransactionsPage);
         //TODO vérifier peut être si l'offset est trop grand
         List<TransactionPayload> payloadList = new ArrayList<>();
         transactions.forEach(t-> {
             var author = t.getAuthor();
             if(userId == author.getId()) {
-                System.out.println(t.getId()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 payloadList.add(new TransactionPayload(
                         t.getId(),
                         t.getDate(),
                         t.getAccountFrom(),
                         t.getAccountTo(),
                         null,
-                        author,
+                        t.getAuthor()/*author*/,
                         t.getAmount(),
-                        author,
+                        t.getAuthor(),
                         t.getComment(),
                         t.getApplied()));
             }
@@ -71,7 +72,7 @@ public class TransactionBeanImpl implements TransactionBean {
                         t.getDate(),
                         t.getAccountFrom(),
                         t.getAccountTo(),
-                        t.getAccountFrom().getCustomer(),
+                        t.getAuthor(),
                         null,
                         t.getAmount(),
                         t.getAuthor(),
@@ -79,6 +80,7 @@ public class TransactionBeanImpl implements TransactionBean {
                         t.getApplied()));
             }
         });
+
         return new ListTransactionPayload(payloadList);
     }
 }

@@ -19,9 +19,6 @@ public class TransactionPayload {
     private Boolean applied;
     private UserEntity destinationUser;
     private UserEntity sourceUser;
-    private String error;
-    private int total;
-
     public TransactionPayload(Integer id,
                               Date date,
                               AccountEntity sourceAccount,
@@ -47,7 +44,6 @@ public class TransactionPayload {
         this.comment = comment;
         this.applied = state;
     }
-
     public Integer getId() {
         return id;
     }
@@ -88,11 +84,4 @@ public class TransactionPayload {
         return sourceUser;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public int getTotal() {
-        return total;
-    }
 }
