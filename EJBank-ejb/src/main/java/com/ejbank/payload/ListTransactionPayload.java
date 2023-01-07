@@ -7,6 +7,7 @@ public class ListTransactionPayload {
     private List<TransactionPayload> transactions;
     private String error;
     public ListTransactionPayload(List<TransactionPayload> transactions) {
+        this.total = transactions.size();
         this.transactions = transactions;
         this.error=null;
     }

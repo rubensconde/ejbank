@@ -16,6 +16,10 @@ public class TransactionPayload {
     private BigDecimal amount;
     private String comment;
     private Boolean applied;
+    private UserEntity destinationUser;
+    private UserEntity sourceUser;
+    private String error;
+    private int total;
 
     public TransactionPayload(Integer id,
                               Date date,
@@ -29,10 +33,10 @@ public class TransactionPayload {
                               Boolean state){
         this.id = id;
         this.date = date;
-        this.sourceAccount = sourceAccount;
-        this.destinationAccount = destinationAccount;
+        this.accountFrom = sourceAccount;
+        this.accountTo = destinationAccount;
         this.destinationUser = destinationUser;
-        this.sourceUser = sourceUser;
+        //this.sourceUser = sourceUser;
         this.amount = amount;
         this.author = author;
         this.comment = comment;
