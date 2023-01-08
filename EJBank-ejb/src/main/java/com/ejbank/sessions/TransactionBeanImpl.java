@@ -33,7 +33,6 @@ public class TransactionBeanImpl implements TransactionBean {
     public Integer getNotAppliedTransactions(Integer id) {
         em.getEntityManagerFactory().getCache().evictAll();
         UserEntity user = em.find(UserEntity.class,id);
-        System.out.println(user.getType());
         int nbNotAppliedTransactionsFrom =0;
         if(user.getType().equals("customer")){
             return nbNotAppliedTransactionsFrom;

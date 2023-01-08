@@ -47,7 +47,6 @@ public class AccountsBeanImpl implements AccountsBean {
      */
     public ListAccountPayload getAttachedAccounts(Integer id) {
         UserEntity user = em.find(UserEntity.class,id);
-        System.out.println(user.getType());
         if(user.getType().equals("advisor")){
             AdvisorEntity advisor = (AdvisorEntity) user;
             List<AccountPayload> payloadList = new ArrayList<>();
