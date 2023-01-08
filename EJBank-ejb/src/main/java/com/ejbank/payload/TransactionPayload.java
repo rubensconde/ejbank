@@ -26,11 +26,7 @@ public class TransactionPayload {
         this.destination = destination;
         this.author = author;
     }
-    public TransactionPayload(Integer id, Boolean approve, Integer author) {
-        this.id = id;
-        this.approve = approve;
-        this.author = author;
-    }
+
 
     public void setId(Integer id) {
         this.id = id;
