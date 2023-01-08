@@ -2,7 +2,6 @@ package com.ejbank.api;
 
 import com.ejbank.beans.TransactionBean;
 import com.ejbank.payload.ListTransactionPayload;
-import com.ejbank.payload.TransactionPayload;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

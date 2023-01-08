@@ -1,13 +1,8 @@
 package com.ejbank.payload;
 
-import com.ejbank.entity.AccountEntity;
-import com.ejbank.entity.UserEntity;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class TransactionPayload {
+public class TransactionPayloadForList {
 
     private Integer id;
     private String date;
@@ -23,7 +18,7 @@ public class TransactionPayload {
     public static enum State {
         APPLIED, TO_APPROVE, WAITING_APPROVE
     }
-    public TransactionPayload(Integer id,
+    public TransactionPayloadForList(Integer id,
                               String date,
                               Integer sourceAccount,
                               Integer destinationAccount,

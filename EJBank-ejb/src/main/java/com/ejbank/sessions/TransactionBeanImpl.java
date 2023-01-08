@@ -5,7 +5,7 @@ import com.ejbank.entity.*;
 import com.ejbank.payload.AccountPayload;
 import com.ejbank.payload.ListAccountPayload;
 import com.ejbank.payload.ListTransactionPayload;
-import com.ejbank.payload.TransactionPayload;
+import com.ejbank.payload.TransactionPayloadForList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -45,28 +45,57 @@ public class TransactionBeanImpl implements TransactionBean {
     public ListTransactionPayload getTransactions(Integer accountId, Integer offset, Integer userId) {
         var userEntity = em.find(UserEntity.class, userId);
         var nbTransactionsPage = 3;
-        //TODO gérer le cas error
+        List<CustomerEntity> customerList = new ArrayList<>();
+        List<AccountEntity> accountList = new ArrayList<>();
+        
+        if(userEntity instanceof CustomerEntity){
+            customerList.add(em.find(CustomerEntity.class,userId));
+            if(customerList.isEmpty()){
+                return new ListTransactionPayload("userID doesn't exist");
+            }
+            customerList.get(0).getAccounts().forEach(account ->{
+                if(account.getId()==accountId){
+                    accountList.add(account);
+                }
+            });
+            if(accountList.isEmpty()){
+                return new ListTransactionPayload("This account isn't for this customer");
+            }
+        }
+        else if(userEntity instanceof AdvisorEntity){
+            var advisorEntity = em.find(AdvisorEntity.class,userId);
+            customerList.addAll(advisorEntity.getCustomers());
+            customerList.forEach(c -> accountList.forEach(account->{
+                if(account.getId()==accountId){
+                    accountList.add(account);
+                }
+            }));
+            if(accountList.isEmpty()){
+                return new ListTransactionPayload("This account isn't for this advisor");
+            }
+        }
+        //TODO
         var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom.id = :accountId OR t.accountTo.id = :accountId ORDER BY t.date DESC");
         query.setParameter("accountId",accountId);
         query.setFirstResult(offset);
         query.setMaxResults(nbTransactionsPage);
         List<TransactionEntity> transactions = query.getResultList();
 
-        List<TransactionPayload> payloadList = new ArrayList<>();
+        List<TransactionPayloadForList> payloadList = new ArrayList<>();
         transactions.forEach(t-> {
-            TransactionPayload.State state;
+            TransactionPayloadForList.State state;
             if(t.getApplied()){
-                 state = TransactionPayload.State.APPLIED;
+                 state = TransactionPayloadForList.State.APPLIED;
             }
             else{
                 if(userEntity instanceof AdvisorEntity){
-                    state = TransactionPayload.State.TO_APPROVE;
+                    state = TransactionPayloadForList.State.TO_APPROVE;
                 }
                 else{
-                    state = TransactionPayload.State.WAITING_APPROVE;
+                    state = TransactionPayloadForList.State.WAITING_APPROVE;
                 }
             }
-                payloadList.add(new TransactionPayload(
+                payloadList.add(new TransactionPayloadForList(
                         t.getId(),
                         t.getDate().toString(),
                         t.getAccountFrom().getId(),

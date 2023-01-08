@@ -4,9 +4,9 @@ import java.util.List;
 
 public class ListTransactionPayload {
     private Integer total;
-    private List<TransactionPayload> transactions;
+    private List<TransactionPayloadForList> transactions;
     private String error;
-    public ListTransactionPayload(List<TransactionPayload> transactions, Integer total) {
+    public ListTransactionPayload(List<TransactionPayloadForList> transactions, Integer total) {
         this.total = total;
         this.transactions = transactions;
         this.error=null;
@@ -21,7 +21,7 @@ public class ListTransactionPayload {
         return total;
     }
 
-    public List<TransactionPayload> getTransactions() {
+    public List<TransactionPayloadForList> getTransactions() {
         return transactions;
     }
 
