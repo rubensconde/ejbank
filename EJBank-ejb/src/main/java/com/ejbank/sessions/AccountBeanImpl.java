@@ -14,10 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Stateless
 @LocalBean
@@ -34,9 +31,14 @@ public class AccountBeanImpl implements AccountBean {
      * @param userId
      * @return
      */
-    public AccountPayload getAccount(Integer accountId, Integer userId) {
+    public AccountPayload getAccount(Integer accountId, Integer userId) {//Done with find
         UserEntity user = em.find(UserEntity.class,userId);
-        System.out.println(user.getType());
+        AccountEntity accountFound = em.find(AccountEntity.class,accountId);
+        String strAdvisor = null;
+        String strCustomer = accountFound.getCustomer().getFirstname()+" "+accountFound.getCustomer().getLastname()+" (client)";
+        //TODO createQuery get transactions from Account found since the first month of this year
+        Date currentDate = Calendar.getInstance().getTime(); //reference to know the year
+
         if(user.getType().equals("customer")){
             CustomerEntity customer = (CustomerEntity) user;
             List<AccountEntity> accountList = customer.getAccounts();
@@ -44,8 +46,15 @@ public class AccountBeanImpl implements AccountBean {
             if(accountMatchedList.isEmpty()){
                 return new AccountPayload("it's not one of your account");
             }else{
-                AccountEntity account =accountMatchedList.get(0);
-                return computeInfos(customer,account);
+                if(accountFound.getType().getName().equals("Courant")){
+                    return computeInfos(customer,accountFound);
+
+                }else{
+                    AdvisorEntity myAdvisor =customer.getAdvisor();
+                    strAdvisor = myAdvisor.getFirstname()+" "+myAdvisor.getLastname()+" (conseillé)";
+                    //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
+                    return new AccountPayload(strCustomer, strAdvisor,accountFound.getType().getRate(),accountFound.getBalance(),accountFound.getBalance());
+                }
             }
         }
         else{
@@ -55,7 +64,14 @@ public class AccountBeanImpl implements AccountBean {
                 return new AccountPayload("it's not one of your account");
             }
             else{
-                return computeInfos(advisor,account);
+                if(accountFound.getType().getName().equals("Courant")){
+                    return computeInfos(advisor,accountFound);
+
+                }else{
+                    strAdvisor = user.getFirstname()+" "+user.getLastname()+" (conseillé)";
+                    //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
+                    return new AccountPayload(strCustomer, strAdvisor,accountFound.getType().getRate(),accountFound.getBalance(),accountFound.getBalance());
+                }
             }
         }
     }
@@ -77,12 +93,6 @@ public class AccountBeanImpl implements AccountBean {
             strAdvisor = user.getFirstname()+" "+user.getLastname()+" (conseillé)";
         }
 
-        if(account.getType().getName().equals("Courant")){
-            return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
-
-        }else{
-            //TODO replace account.getBalance() copy by interest in constructor and how to calculate interest and check if we need to redefine toString or build the string for customer and advisor
-            return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),account.getBalance(),account.getBalance());
-        }
+        return new AccountPayload(strCustomer, strAdvisor,account.getType().getRate(),new BigDecimal(0),account.getBalance());
     }
 }
