@@ -187,17 +187,22 @@ public class TransactionBeanImpl implements TransactionBean {
         AccountEntity source = em.find(AccountEntity.class,transaction.getAccountFrom());
         AccountEntity destination = em.find(AccountEntity.class,transaction.getAccountTo());
         if(user.getType().equals("advisor")){ //In our logic, a customer
+            if(validation.getApprove()){
             var overdraft = new BigDecimal(source.getType().getOverdraft());
             var maxValue = source.getBalance().add(overdraft);
-            if(maxValue.compareTo(transaction.getAmount())==-1){
-                return new ApplyPayload(false,"Echec de la transaction pour cause de solde insuffisant",null);
-            }
-            else{
-                transaction.setApplied(true);
-                source.setBalance(source.getBalance().subtract(transaction.getAmount()));
-                destination.setBalance(destination.getBalance().add(transaction.getAmount()));
-                em.flush(); //Optimistic Locking, avoid data-race, could be done in the other side (customer side) when we apply a correct transaction that does not imply validation by an advisor
-                return new ApplyPayload(true,"Transaction réussie",null);
+                if(maxValue.compareTo(transaction.getAmount())==-1){
+                    return new ApplyPayload(false,"Echec de la transaction pour cause de solde insuffisant",null);
+                }
+                else{
+                    transaction.setApplied(true);
+                    source.setBalance(source.getBalance().subtract(transaction.getAmount()));
+                    destination.setBalance(destination.getBalance().add(transaction.getAmount()));
+                    em.flush(); //Optimistic Locking, avoid data-race, could be done in the other side (customer side) when we apply a correct transaction that does not imply validation by an advisor
+                    return new ApplyPayload(true,"Transaction réussie",null);
+                }
+            }else{
+                em.remove(transaction);
+                return new ApplyPayload(true,"transaction has been removed",null);
             }
         }else{
             return new ApplyPayload(false,null,"Un customer ne peut pas valider de transaction");
