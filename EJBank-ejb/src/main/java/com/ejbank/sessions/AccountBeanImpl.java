@@ -7,7 +7,6 @@ import com.ejbank.entity.AdvisorEntity;
 import com.ejbank.entity.CustomerEntity;
 import com.ejbank.entity.UserEntity;
 import com.ejbank.payload.AccountPayload;
-import com.ejbank.payload.ListAccountPayload;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -82,7 +81,7 @@ public class AccountBeanImpl implements AccountBean {
      * @param account
      * @return AccountPayload
      */
-    private static AccountPayload computeInfos(UserEntity user, AccountEntity account){
+    private AccountPayload computeInfos(UserEntity user, AccountEntity account){
         String strCustomer = account.getCustomer().getFirstname()+" "+account.getCustomer().getLastname()+" (client)";
         String strAdvisor = null;
         if(user.getType().equals("customer")){

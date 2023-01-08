@@ -3,7 +3,6 @@ package com.ejbank.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Table(name = "ejbank_account_type")
@@ -17,8 +16,6 @@ public class AccountTypeEntity implements Serializable {
     private BigDecimal rate;
     @Column(name = "overdraft", nullable = false)
     private Integer overdraft;
-    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
-    private List<AccountEntity> accounts;
 
     public AccountTypeEntity() {
     }
@@ -39,15 +36,11 @@ public class AccountTypeEntity implements Serializable {
         return rate;
     }
 
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
-    }
+    public void setRate(BigDecimal rate) { this.rate = rate; }
 
     public Integer getOverdraft() {
         return overdraft;
     }
 
-    public void setOverdraft(Integer overdraft) {
-        this.overdraft = overdraft;
-    }
+    public void setOverdraft(Integer overdraft) { this.overdraft = overdraft; }
 }

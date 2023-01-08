@@ -1,11 +1,6 @@
 package com.ejbank.payload;
 
-import com.ejbank.entity.AccountEntity;
-import com.ejbank.entity.UserEntity;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class TransactionPayload {
 

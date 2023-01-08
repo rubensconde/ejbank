@@ -1,8 +1,5 @@
 package com.ejbank.payload;
 
-import com.ejbank.entity.AdvisorEntity;
-import com.ejbank.entity.UserEntity;
-
 import java.math.BigDecimal;
 
 public class AccountPayload {

@@ -6,9 +6,6 @@ import com.ejbank.payload.ApplyPayload;
 import com.ejbank.payload.TransactionPayload;
 import com.ejbank.payload.PreviewPayload;
 import com.ejbank.payload.ValidationPayload;
-import com.ejbank.entity.*;
-import com.ejbank.payload.AccountPayload;
-import com.ejbank.payload.ListAccountPayload;
 import com.ejbank.payload.ListTransactionPayload;
 import com.ejbank.payload.TransactionPayloadForList;
 
@@ -20,7 +17,6 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -223,7 +219,7 @@ public class TransactionBeanImpl implements TransactionBean {
      * @param oldBalance
      * @return true if amount is lower than overdraft+balance, else false
      */
-    static boolean isCorrectPreview(AccountEntity source, TransactionPayload transaction, BigDecimal oldBalance){
+    boolean isCorrectPreview(AccountEntity source, TransactionPayload transaction, BigDecimal oldBalance){
         var overdraft = new BigDecimal(source.getType().getOverdraft());
         var maxValue = oldBalance.add(overdraft);
         if(maxValue.compareTo(transaction.getAmount()) == -1){
@@ -233,7 +229,7 @@ public class TransactionBeanImpl implements TransactionBean {
             return true;
         }
     }
-    static PreviewPayload payloadPreview(AccountEntity source, AccountEntity destination, TransactionPayload transaction, BigDecimal oldBalance){
+    PreviewPayload payloadPreview(AccountEntity source, AccountEntity destination, TransactionPayload transaction, BigDecimal oldBalance){
         if(isCorrectPreview(source,transaction,oldBalance)){
             return new PreviewPayload(true,oldBalance.subtract(transaction.getAmount()),destination.getBalance().add(transaction.getAmount()),"transaction valid",null);
         }
@@ -242,12 +238,13 @@ public class TransactionBeanImpl implements TransactionBean {
         }
     }
 
-
-            int nbNotApplied = advisor.getCustomers().stream().mapToInt(c -> c.getTransactions().stream().filter(t -> !t.getApplied()).toList().size()).sum();
-            System.out.println(nbNotApplied);
-            return nbNotApplied;
-        }
-    }
+    /**
+     * Get a list of transactions corresponding to and accountId and a userId using an offset to choose transactions
+     * @param accountId
+     * @param offset
+     * @param userId
+     * @return ListTransactionPayload containing the TransactionPayloads
+     */
 
     @Override
     public ListTransactionPayload getTransactions(Integer accountId, Integer offset, Integer userId) {
@@ -282,7 +279,7 @@ public class TransactionBeanImpl implements TransactionBean {
                 return new ListTransactionPayload("This account isn't for this advisor");
             }
         }
-        //TODO
+
         var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom.id = :accountId OR t.accountTo.id = :accountId ORDER BY t.date DESC");
         query.setParameter("accountId",accountId);
         query.setFirstResult(offset);

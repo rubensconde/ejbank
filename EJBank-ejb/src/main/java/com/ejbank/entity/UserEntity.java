@@ -2,7 +2,6 @@ package com.ejbank.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -14,9 +13,6 @@ public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    private String login;
-//    private String password;
-//    private String email;
     @Column(name = "firstname",nullable = false,length = 50)
     private String firstname;
     @Column(name = "lastname",nullable = false,length = 50)
@@ -39,22 +35,6 @@ public class UserEntity implements Serializable {
         this.id = id;
     }
 
-//    public String getLogin() {
-//        return login;
-//    }
-//
-//    public void setLogin(String login) {
-//        this.login = login;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-
     public String getFirstname() {
         return firstname;
     }
@@ -74,10 +54,6 @@ public class UserEntity implements Serializable {
     public String getType() {
         return type;
     }
-
-//    public void setType(String type) {
-//        this.type = type;
-//    }
 
     public List<TransactionEntity> getTransactions() {
         return transactions;

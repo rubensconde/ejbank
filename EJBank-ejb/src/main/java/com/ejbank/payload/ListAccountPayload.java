@@ -1,6 +1,5 @@
 package com.ejbank.payload;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ListAccountPayload {
