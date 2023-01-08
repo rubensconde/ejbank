@@ -43,8 +43,9 @@ public class TransactionBeanImpl implements TransactionBean {
 
     @Override
     public ListTransactionPayload getTransactions(Integer accountId, Integer offset, Integer userId) {
+        var userEntity = em.find(UserEntity.class, userId);
         var nbTransactionsPage = 3;
-
+        //TODO gérer le cas error
         var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom.id = :accountId OR t.accountTo.id = :accountId ORDER BY t.date DESC");
         query.setParameter("accountId",accountId);
         query.setFirstResult(offset);
@@ -53,6 +54,18 @@ public class TransactionBeanImpl implements TransactionBean {
 
         List<TransactionPayload> payloadList = new ArrayList<>();
         transactions.forEach(t-> {
+            TransactionPayload.State state;
+            if(t.getApplied()){
+                 state = TransactionPayload.State.APPLIED;
+            }
+            else{
+                if(userEntity instanceof AdvisorEntity){
+                    state = TransactionPayload.State.TO_APPROVE;
+                }
+                else{
+                    state = TransactionPayload.State.WAITING_APPROVE;
+                }
+            }
                 payloadList.add(new TransactionPayload(
                         t.getId(),
                         t.getDate().toString(),
@@ -63,9 +76,13 @@ public class TransactionBeanImpl implements TransactionBean {
                         t.getAmount(),
                         t.getAuthor().getFirstname()+t.getAuthor().getLastname(),
                         t.getComment(),
-                        t.getApplied()));
+                        state));
         });
 
-        return new ListTransactionPayload(payloadList);
+        Long total = (Long) em.createQuery("SELECT COUNT(t) FROM TransactionEntity t WHERE t.accountFrom.id = :accountId OR t.accountTo.id = :accountId")
+                .setParameter("accountId",accountId)
+                .getSingleResult();
+
+        return new ListTransactionPayload(payloadList, total.intValue());
     }
 }

@@ -11,20 +11,18 @@ public class TransactionPayload {
 
     private Integer id;
     private String date;
-    // private Date date;
-    private Integer accountFrom;
-    //private AccountEntity accountFrom;
-    private Integer accountTo;
-    //private AccountEntity accountTo;
+    private Integer source;
+    private Integer destination;
     private String author;
-    //private UserEntity author;
     private BigDecimal amount;
     private String comment;
-    private Boolean applied;
-    private String destinationUser;
-    //private UserEntity destinationUser;
-    private String sourceUser;
-    //private UserEntity sourceUser;
+    private State state;
+    private String destination_user;
+    private String source_user;
+
+    public static enum State {
+        APPLIED, TO_APPROVE, WAITING_APPROVE
+    }
     public TransactionPayload(Integer id,
                               String date,
                               Integer sourceAccount,
@@ -34,21 +32,21 @@ public class TransactionPayload {
                               BigDecimal amount,
                               String author,
                               String comment,
-                              Boolean state){
+                              State state){
         if(destinationUser==null) {
-            this.sourceUser = sourceUser;
+            this.source_user = sourceUser;
         }
         else{
-            this.destinationUser = destinationUser;
+            this.destination_user = destinationUser;
         }
         this.id = id;
         this.date = date;
-        this.accountFrom = sourceAccount;
-        this.accountTo = destinationAccount;
+        this.source = sourceAccount;
+        this.destination = destinationAccount;
         this.amount = amount;
         this.author = author;
         this.comment = comment;
-        this.applied = state;
+        this.state = state;
     }
 
     public Integer getId() {
@@ -59,12 +57,12 @@ public class TransactionPayload {
         return date;
     }
 
-    public Integer getAccountFrom() {
-        return accountFrom;
+    public Integer getSource() {
+        return source;
     }
 
-    public Integer getAccountTo() {
-        return accountTo;
+    public Integer getDestination() {
+        return destination;
     }
 
     public String getAuthor() {
@@ -79,15 +77,15 @@ public class TransactionPayload {
         return comment;
     }
 
-    public Boolean getApplied() {
-        return applied;
+    public State getState() {
+        return state;
     }
 
-    public String getDestinationUser() {
-        return destinationUser;
+    public String getDestination_user() {
+        return destination_user;
     }
 
-    public String getSourceUser() {
-        return sourceUser;
+    public String getSource_user() {
+        return source_user;
     }
 }
