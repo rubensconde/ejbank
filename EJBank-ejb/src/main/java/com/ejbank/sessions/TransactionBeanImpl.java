@@ -44,41 +44,26 @@ public class TransactionBeanImpl implements TransactionBean {
     @Override
     public ListTransactionPayload getTransactions(Integer accountId, Integer offset, Integer userId) {
         var nbTransactionsPage = 3;
-        var accountEntity = em.find(AccountEntity.class,accountId);
-        var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom = :accountEntity OR t.accountTo = :accountEntity");
-        query.setParameter("accountEntity",accountEntity);
+
+        var query = em.createQuery("SELECT t FROM TransactionEntity t WHERE t.accountFrom.id = :accountId OR t.accountTo.id = :accountId ORDER BY t.date DESC");
+        query.setParameter("accountId",accountId);
+        query.setFirstResult(offset);
+        query.setMaxResults(nbTransactionsPage);
         List<TransactionEntity> transactions = query.getResultList();
 
-        transactions.subList(offset*nbTransactionsPage,(offset+1)*nbTransactionsPage);
-        //TODO vérifier peut être si l'offset est trop grand
         List<TransactionPayload> payloadList = new ArrayList<>();
         transactions.forEach(t-> {
-            var author = t.getAuthor();
-            if(userId == author.getId()) {
                 payloadList.add(new TransactionPayload(
                         t.getId(),
-                        t.getDate(),
-                        t.getAccountFrom(),
-                        t.getAccountTo(),
-                        null,
-                        t.getAuthor()/*author*/,
+                        t.getDate().toString(),
+                        t.getAccountFrom().getId(),
+                        t.getAccountTo().getId(),
+                        t.getAccountTo().getCustomer().getFirstname(),
+                        t.getAccountFrom().getCustomer().getFirstname(),
                         t.getAmount(),
-                        t.getAuthor(),
+                        t.getAuthor().getFirstname()+t.getAuthor().getLastname(),
                         t.getComment(),
                         t.getApplied()));
-            }
-            else {
-                payloadList.add(new TransactionPayload(t.getId(),
-                        t.getDate(),
-                        t.getAccountFrom(),
-                        t.getAccountTo(),
-                        t.getAuthor(),
-                        null,
-                        t.getAmount(),
-                        t.getAuthor(),
-                        t.getComment(),
-                        t.getApplied()));
-            }
         });
 
         return new ListTransactionPayload(payloadList);

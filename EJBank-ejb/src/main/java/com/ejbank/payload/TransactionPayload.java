@@ -10,23 +10,29 @@ import java.util.Date;
 public class TransactionPayload {
 
     private Integer id;
-    private Date date;
-    private AccountEntity accountFrom;
-    private AccountEntity accountTo;
-    private UserEntity author;
+    private String date;
+    // private Date date;
+    private Integer accountFrom;
+    //private AccountEntity accountFrom;
+    private Integer accountTo;
+    //private AccountEntity accountTo;
+    private String author;
+    //private UserEntity author;
     private BigDecimal amount;
     private String comment;
     private Boolean applied;
-    private UserEntity destinationUser;
-    private UserEntity sourceUser;
+    private String destinationUser;
+    //private UserEntity destinationUser;
+    private String sourceUser;
+    //private UserEntity sourceUser;
     public TransactionPayload(Integer id,
-                              Date date,
-                              AccountEntity sourceAccount,
-                              AccountEntity destinationAccount,
-                              UserEntity destinationUser,
-                              UserEntity sourceUser,
+                              String date,
+                              Integer sourceAccount,
+                              Integer destinationAccount,
+                              String destinationUser,
+                              String sourceUser,
                               BigDecimal amount,
-                              UserEntity author,
+                              String author,
                               String comment,
                               Boolean state){
         if(destinationUser==null) {
@@ -44,23 +50,24 @@ public class TransactionPayload {
         this.comment = comment;
         this.applied = state;
     }
+
     public Integer getId() {
         return id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public AccountEntity getAccountFrom() {
+    public Integer getAccountFrom() {
         return accountFrom;
     }
 
-    public AccountEntity getAccountTo() {
+    public Integer getAccountTo() {
         return accountTo;
     }
 
-    public UserEntity getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
@@ -76,12 +83,11 @@ public class TransactionPayload {
         return applied;
     }
 
-    public UserEntity getDestinationUser() {
+    public String getDestinationUser() {
         return destinationUser;
     }
 
-    public UserEntity getSourceUser() {
+    public String getSourceUser() {
         return sourceUser;
     }
-
 }
