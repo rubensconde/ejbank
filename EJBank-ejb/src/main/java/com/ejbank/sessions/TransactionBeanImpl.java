@@ -74,7 +74,7 @@ public class TransactionBeanImpl implements TransactionBean {
                         t.getAccountTo().getCustomer().getFirstname(),
                         t.getAccountFrom().getCustomer().getFirstname(),
                         t.getAmount(),
-                        t.getAuthor().getFirstname()+t.getAuthor().getLastname(),
+                        t.getAuthor().getFirstname()+" "+t.getAuthor().getLastname(),
                         t.getComment(),
                         state));
         });
