@@ -5,6 +5,7 @@ import com.ejbank.payload.ApplyPayload;
 import com.ejbank.payload.TransactionPayload;
 import com.ejbank.payload.PreviewPayload;
 import com.ejbank.payload.ValidationPayload;
+import com.ejbank.payload.ListTransactionPayload;
 
 import javax.ejb.Local;
 
@@ -17,4 +18,5 @@ public interface TransactionBean {
     ApplyPayload applyTransaction(TransactionPayload transaction);
 
     ApplyPayload validateTransaction(ValidationPayload validation);
+    ListTransactionPayload getTransactions(Integer accountId, Integer offset, Integer userId);
 }

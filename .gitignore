@@ -1,7 +1,0 @@
-**/target
-**/nb-configuration.xml
-**/nbactions.tmp
-**/nbproject
-**/build
-**/dist
-deployments/*

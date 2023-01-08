@@ -35,8 +35,8 @@ public class TestTransaction {
      */
     @GET
     @Path("/list/{account_id}/{offset}/{user_id}")
-    public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId,@PathParam("offset") Integer offset, @PathParam("user_id") Integer userId) {
-        return null;
+    public ListTransactionPayload getTransactions(@PathParam("account_id") Integer accountId, @PathParam("offset") Integer offset, @PathParam("user_id") Integer userId) {
+        return transactionBean.getTransactions(accountId, offset, userId);
     }
 
     /**
